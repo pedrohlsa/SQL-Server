@@ -1,310 +1,334 @@
-CREATE DATABASE [Academia];
-GO
-USE [Academia];
-GO
+CREATE database Academia;
+
 USE [Academia]
 GO
-/****** Object:  Table [dbo].[Aluno]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[aluno]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Aluno](
-	[id_Aluno] [int] IDENTITY(1,1) NOT NULL,
-	[nomeAluno] [varchar](150) NOT NULL,
-	[cpf_aluno] [varchar](14) NOT NULL,
-	[data_nasc] [date] NOT NULL,
-	[sexo] [varchar](1) NOT NULL,
-	[telefone_Aluno] [varchar](20) NULL,
-	[email_Aluno] [varchar](150) NOT NULL,
+CREATE TABLE [dbo].[aluno](
+	[id_aluno] [int] IDENTITY(1,1) NOT NULL,
+	[NomeAluno] [varchar](150) NOT NULL,
+	[cpf] [varchar](14) NOT NULL,
+	[data_nasc] [date] NULL,
+	[sexo] [varchar](1) NULL,
+	[Telefone_Aluno] [varchar](20) NULL,
+	[Email_Aluno] [varchar](150) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Aluno] ASC
+	[id_aluno] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
 UNIQUE NONCLUSTERED 
 (
-	[cpf_aluno] ASC
+	[cpf] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Aparelho]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[aparelho]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Aparelho](
-	[id_Aparelho] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[aparelho](
+	[id_aparelho] [int] IDENTITY(1,1) NOT NULL,
 	[nomeAparelho] [varchar](150) NOT NULL,
-	[marcaAparelho] [varchar](150) NOT NULL,
-	[valor] [decimal](10, 2) NOT NULL,
-	[status_Aparelho] [varchar](20) NULL,
-	[datacompra_Aparelho] [date] NULL,
-	[datavenda_Aparelho] [date] NULL,
+	[marcaAparelho] [varchar](150) NULL,
+	[valor] [decimal](10, 2) NULL,
+	[status] [varchar](20) NULL,
+	[datacompra_aparelho] [date] NULL,
+	[datavenda_aparelho] [date] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Aparelho] ASC
+	[id_aparelho] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Cargo]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[cargo]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Cargo](
-	[id_Cargo] [int] IDENTITY(1,1) NOT NULL,
-	[nomeCargo] [varchar](100) NULL,
+CREATE TABLE [dbo].[cargo](
+	[id_cargo] [int] IDENTITY(1,1) NOT NULL,
+	[NomeCargo] [varchar](100) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Cargo] ASC
+	[id_cargo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Exercicio]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[exercicio]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Exercicio](
-	[id_Exercicio] [int] IDENTITY(1,1) NOT NULL,
-	[nomeExercicio] [varchar](150) NOT NULL,
+CREATE TABLE [dbo].[exercicio](
+	[id_exercicio] [int] IDENTITY(1,1) NOT NULL,
+	[NomeExercicio] [varchar](150) NOT NULL,
+	[id_aparelho] [int] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Exercicio] ASC
+	[id_exercicio] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[FormaPagamento]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[formapagamento]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[FormaPagamento](
-	[id_FormaPgto] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[formapagamento](
+	[id_formapgto] [int] IDENTITY(1,1) NOT NULL,
 	[descricao] [varchar](100) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_FormaPgto] ASC
+	[id_formapgto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+UNIQUE NONCLUSTERED 
+(
+	[descricao] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Funcionario]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[funcionario]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Funcionario](
-	[id_Funcionario] [int] IDENTITY(1,1) NOT NULL,
-	[id_Setor] [int] NULL,
-	[id_Cargo] [int] NULL,
-	[nomeFuncionario] [varchar](150) NOT NULL,
-	[cpf_Funcionario] [varchar](14) NOT NULL,
+CREATE TABLE [dbo].[funcionario](
+	[id_funcionario] [int] IDENTITY(1,1) NOT NULL,
+	[id_setor] [int] NULL,
+	[id_cargo] [int] NULL,
+	[NomeFuncionario] [varchar](150) NOT NULL,
+	[cpf] [varchar](14) NOT NULL,
 	[salario] [decimal](10, 2) NULL,
 	[data_contratacao] [date] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Funcionario] ASC
+	[id_funcionario] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
 UNIQUE NONCLUSTERED 
 (
-	[cpf_Funcionario] ASC
+	[cpf] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ManutencaoAparelho]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[manutencaoAparelho]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[ManutencaoAparelho](
-	[id_Manutencao] [int] IDENTITY(1,1) NOT NULL,
-	[id_Aparelho] [int] NULL,
-	[id_Funcionario] [int] NULL,
-	[descricao_problema] [varchar](150) NOT NULL,
-	[custo_reparo] [decimal](10, 2) NOT NULL,
-	[data_manutencao] [date] NULL,
+CREATE TABLE [dbo].[manutencaoAparelho](
+	[id_manutencao] [int] IDENTITY(1,1) NOT NULL,
+	[id_aparelho] [int] NULL,
+	[id_funcionario] [int] NULL,
+	[descricaoproblema] [varchar](150) NULL,
+	[custo_reparo] [decimal](10, 2) NULL,
+	[datamanutencao] [date] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Manutencao] ASC
+	[id_manutencao] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Matricula]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[matricula]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Matricula](
-	[id_Matricula] [int] IDENTITY(1000,1) NOT NULL,
-	[id_Aluno] [int] NULL,
-	[id_Plano] [int] NULL,
-	[preco_Historico] [decimal](10, 2) NULL,
-	[data_Inicio] [date] NULL,
-	[data_Fim] [date] NULL,
-	[status_Matricula] [varchar](15) NULL,
+CREATE TABLE [dbo].[matricula](
+	[id_matricula] [int] IDENTITY(1000,1) NOT NULL,
+	[id_aluno] [int] NULL,
+	[id_plano] [int] NULL,
+	[preco_historico] [decimal](10, 2) NULL,
+	[data_inicio] [date] NULL,
+	[data_fim] [date] NULL,
+	[status] [varchar](15) NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Matricula] ASC
+	[id_matricula] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pagamento]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[pagamento]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Pagamento](
-	[id_Pagamento] [int] IDENTITY(1,1) NOT NULL,
-	[id_Matricula] [int] NULL,
-	[id_FormaPgto] [int] NULL,
+CREATE TABLE [dbo].[pagamento](
+	[id_pagamento] [int] IDENTITY(1,1) NOT NULL,
+	[id_matricula] [int] NULL,
+	[id_forma_pgto] [int] NULL,
 	[valor_pago] [decimal](10, 2) NULL,
 	[data_vencimento] [date] NOT NULL,
-	[data_pgto] [date] NULL,
+	[data_pagamento] [date] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Pagamento] ASC
+	[id_pagamento] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PlanoAluno]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[planoAluno]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[PlanoAluno](
-	[id_Plano] [int] IDENTITY(1,1) NOT NULL,
-	[nomePlano] [varchar](30) NOT NULL,
-	[mensalidade] [decimal](10, 2) NULL,
-	[duracao] [int] NULL,
+CREATE TABLE [dbo].[planoAluno](
+	[id_plano] [int] IDENTITY(1,1) NOT NULL,
+	[NomePlano] [varchar](30) NOT NULL,
+	[Mensalidade] [decimal](10, 2) NULL,
+	[Duracao] [int] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Plano] ASC
+	[id_plano] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Presenca]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[presenca]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Presenca](
-	[id_Presenca] [int] IDENTITY(1,1) NOT NULL,
-	[id_Aluno] [int] NULL,
+CREATE TABLE [dbo].[presenca](
+	[id_presenca] [int] IDENTITY(1,1) NOT NULL,
+	[id_aluno] [int] NULL,
 	[data_entrada] [datetime] NULL,
 	[data_saida] [datetime] NULL,
-	[status_Presenca] [varchar](30) NULL,
+	[status] [varchar](30) NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Presenca] ASC
+	[id_presenca] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Setor]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[setor]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Setor](
-	[id_Setor] [int] IDENTITY(1,1) NOT NULL,
-	[nomeSetor] [varchar](100) NULL,
+CREATE TABLE [dbo].[setor](
+	[id_setor] [int] IDENTITY(1,1) NOT NULL,
+	[NomeSetor] [varchar](100) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Setor] ASC
+	[id_setor] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Treino]    Script Date: 18/04/2026 14:28:17 ******/
+/****** Object:  Table [dbo].[treino]    Script Date: 20/04/2026 19:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Treino](
-	[id_Treino] [int] IDENTITY(1,1) NOT NULL,
-	[id_Aluno] [int] NULL,
-	[id_Exercicio] [int] NULL,
-	[id_Aparelho] [int] NULL,
-	[id_Funcionario] [int] NULL,
-	[nome_Ficha] [varchar](1) NOT NULL,
-	[date_Ficha] [date] NULL,
+CREATE TABLE [dbo].[treino](
+	[id_treino] [int] IDENTITY(1,1) NOT NULL,
+	[id_aluno] [int] NULL,
+	[id_exercicio] [int] NULL,
+	[id_funcionario] [int] NULL,
+	[nome_ficha] [varchar](1) NULL,
+	[data_treino] [date] NULL,
 	[series] [int] NULL,
 	[repeticoes] [int] NULL,
 	[descanso_segundos] [int] NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[id_Treino] ASC
+	[id_treino] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[Aparelho] ADD  DEFAULT (getdate()) FOR [datacompra_Aparelho]
+ALTER TABLE [dbo].[aparelho] ADD  DEFAULT (getdate()) FOR [datacompra_aparelho]
 GO
-ALTER TABLE [dbo].[Funcionario] ADD  DEFAULT (getdate()) FOR [data_contratacao]
+ALTER TABLE [dbo].[funcionario] ADD  DEFAULT (getdate()) FOR [data_contratacao]
 GO
-ALTER TABLE [dbo].[ManutencaoAparelho] ADD  DEFAULT (getdate()) FOR [data_manutencao]
+ALTER TABLE [dbo].[manutencaoAparelho] ADD  DEFAULT (getdate()) FOR [datamanutencao]
 GO
-ALTER TABLE [dbo].[Matricula] ADD  DEFAULT (getdate()) FOR [data_Inicio]
+ALTER TABLE [dbo].[matricula] ADD  DEFAULT (getdate()) FOR [data_inicio]
 GO
-ALTER TABLE [dbo].[Pagamento] ADD  DEFAULT (getdate()) FOR [data_pgto]
+ALTER TABLE [dbo].[pagamento] ADD  DEFAULT (getdate()) FOR [data_pagamento]
 GO
-ALTER TABLE [dbo].[Presenca] ADD  DEFAULT (getdate()) FOR [data_entrada]
+ALTER TABLE [dbo].[presenca] ADD  DEFAULT (getdate()) FOR [data_entrada]
 GO
-ALTER TABLE [dbo].[Treino] ADD  DEFAULT (getdate()) FOR [date_Ficha]
+ALTER TABLE [dbo].[treino] ADD  DEFAULT (getdate()) FOR [data_treino]
 GO
-ALTER TABLE [dbo].[Funcionario]  WITH CHECK ADD FOREIGN KEY([id_Cargo])
-REFERENCES [dbo].[Cargo] ([id_Cargo])
+ALTER TABLE [dbo].[exercicio]  WITH CHECK ADD  CONSTRAINT [FK_Aparelho_Exercicio] FOREIGN KEY([id_aparelho])
+REFERENCES [dbo].[aparelho] ([id_aparelho])
 GO
-ALTER TABLE [dbo].[Funcionario]  WITH CHECK ADD FOREIGN KEY([id_Setor])
-REFERENCES [dbo].[Setor] ([id_Setor])
+ALTER TABLE [dbo].[exercicio] CHECK CONSTRAINT [FK_Aparelho_Exercicio]
 GO
-ALTER TABLE [dbo].[ManutencaoAparelho]  WITH CHECK ADD FOREIGN KEY([id_Aparelho])
-REFERENCES [dbo].[Aparelho] ([id_Aparelho])
+ALTER TABLE [dbo].[funcionario]  WITH CHECK ADD  CONSTRAINT [FK_Cargo_Func] FOREIGN KEY([id_cargo])
+REFERENCES [dbo].[cargo] ([id_cargo])
 GO
-ALTER TABLE [dbo].[ManutencaoAparelho]  WITH CHECK ADD FOREIGN KEY([id_Funcionario])
-REFERENCES [dbo].[Funcionario] ([id_Funcionario])
+ALTER TABLE [dbo].[funcionario] CHECK CONSTRAINT [FK_Cargo_Func]
 GO
-ALTER TABLE [dbo].[Matricula]  WITH CHECK ADD FOREIGN KEY([id_Aluno])
-REFERENCES [dbo].[Aluno] ([id_Aluno])
+ALTER TABLE [dbo].[funcionario]  WITH CHECK ADD  CONSTRAINT [FK_Setor_Func] FOREIGN KEY([id_setor])
+REFERENCES [dbo].[setor] ([id_setor])
 GO
-ALTER TABLE [dbo].[Matricula]  WITH CHECK ADD FOREIGN KEY([id_Plano])
-REFERENCES [dbo].[PlanoAluno] ([id_Plano])
+ALTER TABLE [dbo].[funcionario] CHECK CONSTRAINT [FK_Setor_Func]
 GO
-ALTER TABLE [dbo].[Pagamento]  WITH CHECK ADD FOREIGN KEY([id_FormaPgto])
-REFERENCES [dbo].[FormaPagamento] ([id_FormaPgto])
+ALTER TABLE [dbo].[manutencaoAparelho]  WITH CHECK ADD  CONSTRAINT [FK_Aparelho_Manut] FOREIGN KEY([id_aparelho])
+REFERENCES [dbo].[aparelho] ([id_aparelho])
 GO
-ALTER TABLE [dbo].[Pagamento]  WITH CHECK ADD FOREIGN KEY([id_Matricula])
-REFERENCES [dbo].[Matricula] ([id_Matricula])
+ALTER TABLE [dbo].[manutencaoAparelho] CHECK CONSTRAINT [FK_Aparelho_Manut]
 GO
-ALTER TABLE [dbo].[Presenca]  WITH CHECK ADD FOREIGN KEY([id_Aluno])
-REFERENCES [dbo].[Aluno] ([id_Aluno])
+ALTER TABLE [dbo].[manutencaoAparelho]  WITH CHECK ADD  CONSTRAINT [FK_Func_Manut] FOREIGN KEY([id_funcionario])
+REFERENCES [dbo].[funcionario] ([id_funcionario])
 GO
-ALTER TABLE [dbo].[Treino]  WITH CHECK ADD FOREIGN KEY([id_Aluno])
-REFERENCES [dbo].[Aluno] ([id_Aluno])
+ALTER TABLE [dbo].[manutencaoAparelho] CHECK CONSTRAINT [FK_Func_Manut]
 GO
-ALTER TABLE [dbo].[Treino]  WITH CHECK ADD FOREIGN KEY([id_Aparelho])
-REFERENCES [dbo].[Aparelho] ([id_Aparelho])
+ALTER TABLE [dbo].[matricula]  WITH CHECK ADD  CONSTRAINT [FK_Aluno_Matricula] FOREIGN KEY([id_aluno])
+REFERENCES [dbo].[aluno] ([id_aluno])
 GO
-ALTER TABLE [dbo].[Treino]  WITH CHECK ADD FOREIGN KEY([id_Exercicio])
-REFERENCES [dbo].[Exercicio] ([id_Exercicio])
+ALTER TABLE [dbo].[matricula] CHECK CONSTRAINT [FK_Aluno_Matricula]
 GO
-ALTER TABLE [dbo].[Treino]  WITH CHECK ADD FOREIGN KEY([id_Funcionario])
-REFERENCES [dbo].[Funcionario] ([id_Funcionario])
+ALTER TABLE [dbo].[matricula]  WITH CHECK ADD  CONSTRAINT [FK_Plano_Matricula] FOREIGN KEY([id_plano])
+REFERENCES [dbo].[planoAluno] ([id_plano])
 GO
-ALTER TABLE [dbo].[Aluno]  WITH CHECK ADD CHECK  ((len([cpf_Aluno])>=(11)))
+ALTER TABLE [dbo].[matricula] CHECK CONSTRAINT [FK_Plano_Matricula]
 GO
-ALTER TABLE [dbo].[Aluno]  WITH CHECK ADD CHECK  (([email_Aluno] like '%@%'))
+ALTER TABLE [dbo].[pagamento]  WITH CHECK ADD  CONSTRAINT [FK_Forma_Pagto] FOREIGN KEY([id_forma_pgto])
+REFERENCES [dbo].[formapagamento] ([id_formapgto])
 GO
-ALTER TABLE [dbo].[Aluno]  WITH CHECK ADD CHECK  ((len([nomeAluno])>=(3)))
+ALTER TABLE [dbo].[pagamento] CHECK CONSTRAINT [FK_Forma_Pagto]
 GO
-ALTER TABLE [dbo].[Aluno]  WITH CHECK ADD CHECK  (([sexo]='F' OR [sexo]='M'))
+ALTER TABLE [dbo].[pagamento]  WITH CHECK ADD  CONSTRAINT [FK_Matricula_Pagto] FOREIGN KEY([id_matricula])
+REFERENCES [dbo].[matricula] ([id_matricula])
 GO
-ALTER TABLE [dbo].[Aparelho]  WITH CHECK ADD CHECK  (([status_Aparelho]='Vendido' OR [status_Aparelho]='Manutencao' OR [status_Aparelho]='Disponivel'))
+ALTER TABLE [dbo].[pagamento] CHECK CONSTRAINT [FK_Matricula_Pagto]
 GO
-ALTER TABLE [dbo].[FormaPagamento]  WITH CHECK ADD CHECK  (([descricao]='Cartão de Débito' OR [descricao]='Cartão de Credito' OR [descricao]='Pix' OR [descricao]='Dinheiro'))
+ALTER TABLE [dbo].[presenca]  WITH CHECK ADD  CONSTRAINT [FK_Aluno_Presenca] FOREIGN KEY([id_aluno])
+REFERENCES [dbo].[aluno] ([id_aluno])
 GO
-ALTER TABLE [dbo].[Funcionario]  WITH CHECK ADD CHECK  ((len([cpf_Funcionario])>=(11)))
+ALTER TABLE [dbo].[presenca] CHECK CONSTRAINT [FK_Aluno_Presenca]
 GO
-ALTER TABLE [dbo].[ManutencaoAparelho]  WITH CHECK ADD CHECK  (([custo_reparo]>=(0)))
+ALTER TABLE [dbo].[treino]  WITH CHECK ADD  CONSTRAINT [FK_Aluno_Treino] FOREIGN KEY([id_aluno])
+REFERENCES [dbo].[aluno] ([id_aluno])
 GO
-ALTER TABLE [dbo].[Matricula]  WITH CHECK ADD CHECK  (([status_Matricula]='Finalizada' OR [status_Matricula]='Cancelada' OR [status_Matricula]='Trancada' OR [status_Matricula]='Ativa'))
+ALTER TABLE [dbo].[treino] CHECK CONSTRAINT [FK_Aluno_Treino]
 GO
-ALTER TABLE [dbo].[Treino]  WITH CHECK ADD CHECK  (([nome_Ficha]='E' OR [nome_Ficha]='D' OR [nome_Ficha]='C' OR [nome_Ficha]='B' OR [nome_Ficha]='A'))
+ALTER TABLE [dbo].[treino]  WITH CHECK ADD  CONSTRAINT [FK_Exercicio_Treino] FOREIGN KEY([id_exercicio])
+REFERENCES [dbo].[exercicio] ([id_exercicio])
+GO
+ALTER TABLE [dbo].[treino] CHECK CONSTRAINT [FK_Exercicio_Treino]
+GO
+ALTER TABLE [dbo].[treino]  WITH CHECK ADD  CONSTRAINT [FK_Func_Treino] FOREIGN KEY([id_funcionario])
+REFERENCES [dbo].[funcionario] ([id_funcionario])
+GO
+ALTER TABLE [dbo].[treino] CHECK CONSTRAINT [FK_Func_Treino]
+GO
+ALTER TABLE [dbo].[aluno]  WITH CHECK ADD CHECK  (([Email_Aluno] like '%@%'))
+GO
+ALTER TABLE [dbo].[aluno]  WITH CHECK ADD CHECK  ((len([NomeAluno])>=(3)))
+GO
+ALTER TABLE [dbo].[aluno]  WITH CHECK ADD CHECK  (([sexo]='F' OR [sexo]='M'))
+GO
+ALTER TABLE [dbo].[aparelho]  WITH CHECK ADD CHECK  (([status]='Vendido' OR [status]='Manutencao' OR [status]='Disponivel'))
+GO
+ALTER TABLE [dbo].[formapagamento]  WITH CHECK ADD  CONSTRAINT [CK_FormaPagamento_Padrao] CHECK  (([descricao]='Boleto' OR [descricao]='Cartao de Debito' OR [descricao]='Cartao de Credito' OR [descricao]='Pix' OR [descricao]='Dinheiro'))
+GO
+ALTER TABLE [dbo].[formapagamento] CHECK CONSTRAINT [CK_FormaPagamento_Padrao]
+GO
+ALTER TABLE [dbo].[matricula]  WITH CHECK ADD CHECK  (([status]='Finalizada' OR [status]='Cancelada' OR [status]='Trancada' OR [status]='Ativa'))
+GO
+ALTER TABLE [dbo].[treino]  WITH CHECK ADD CHECK  (([nome_ficha]='E' OR [nome_ficha]='D' OR [nome_ficha]='C' OR [nome_ficha]='B' OR [nome_ficha]='A'))
 GO
