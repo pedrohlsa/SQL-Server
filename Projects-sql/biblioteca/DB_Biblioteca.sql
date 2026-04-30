@@ -1,7 +1,7 @@
 USE [master]
 GO
 /****** Object:  Database [Biblioteca2]    Script Date: 29/04/2026 22:59:04 ******/
-CREATE DATABASE [Biblioteca]
+CREATE DATABASE [Biblioteca2]
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'Biblioteca2', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL17.SQLEXPRESS\MSSQL\DATA\Biblioteca2.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
