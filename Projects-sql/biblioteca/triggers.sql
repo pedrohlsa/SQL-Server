@@ -113,3 +113,20 @@ begin
 	inner join livro l on ins.id_livro = l.id_livro
 END;
 GO
+
+CREATE OR ALTER TRIGGER tg_listar_aluguel
+ON alugar_livro
+AFTER INSERT
+AS 
+BEGIN
+    SELECT 
+        l.nomelivro, 
+        c.nomecliente, 
+        i.data_emprestimo, 
+        i.livro_devolvido
+    FROM inserted i
+    INNER JOIN livro l ON l.id_livro = i.id_livro
+    INNER JOIN cliente c ON c.id_cliente = i.id_cliente;
+END;
+GO
+	
