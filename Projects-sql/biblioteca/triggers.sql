@@ -1,3 +1,5 @@
+-- Basic triggers until line 133.
+
 CREATE OR ALTER TRIGGER trg_listarAssuntos
 ON assunto
 AFTER UPDATE
@@ -130,3 +132,55 @@ BEGIN
 END;
 GO
 	
+-- Intermediate triggers 
+
+CREATE OR ALTER TRIGGER tg_estoque_venda
+ON item_venda
+AFTER INSERT
+AS
+BEGIN
+    UPDATE l
+    SET l.estoque = l.estoque - i.quantia
+    FROM livro l
+    INNER JOIN inserted i ON l.id_livro = i.id_livro;
+END;
+GO
+
+CREATE OR ALTER TRIGGER tg_estoque_aluguel
+ON alugar_livro 
+AFTER INSERT 
+AS 
+BEGIN 
+    UPDATE l
+    SET l.estoque = l.estoque - 1
+    FROM inserted i
+    inner join livro l on l.id_livro = i.id_livro;
+END;
+GO
+
+CREATE OR ALTER TRIGGER tg_estoque_devolucao
+ON alugar_livro
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE l
+    SET l.estoque = l.estoque + 1
+    FROM livro l
+    INNER JOIN inserted i ON l.id_livro = i.id_livro
+    INNER JOIN deleted d ON d.id_alugarlivro = i.id_alugarlivro
+    WHERE i.livro_devolvido = 'S' AND d.livro_devolvido = 'N'; 
+END;
+GO
+
+CREATE OR ALTER TRIGGER tg_block_formapgto
+ON forma_pgto
+AFTER INSERT 
+AS 
+BEGIN 
+    ROLLBACK TRANSACTION;
+
+    PRINT 'Erro: A tabela forma_pgto não pode ser inserida nenhum valor novo.';
+END;
+GO
+
+
