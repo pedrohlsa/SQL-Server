@@ -1,90 +1,28 @@
-USE [master]
+USE [MASTER]
 GO
-/****** Object:  Database [Biblioteca2]    Script Date: 29/04/2026 22:59:04 ******/
-CREATE DATABASE [Biblioteca2]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'Biblioteca2', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL17.SQLEXPRESS\MSSQL\DATA\Biblioteca2.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
- LOG ON 
-( NAME = N'Biblioteca2_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL17.SQLEXPRESS\MSSQL\DATA\Biblioteca2_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
- WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+
+USE [Biblioteca]
 GO
-ALTER DATABASE [Biblioteca2] SET COMPATIBILITY_LEVEL = 170
+/****** Objeto:  Table [dbo].[alugar_livro]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
 GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [Biblioteca2].[dbo].[sp_fulltext_database] @action = 'enable'
-end
+SET QUOTED_IDENTIFIER ON
 GO
-ALTER DATABASE [Biblioteca2] SET ANSI_NULL_DEFAULT OFF 
+CREATE TABLE [dbo].[alugar_livro](
+	[id_alugarlivro] [int] IDENTITY(1,1) NOT NULL,
+	[id_livro] [int] NULL,
+	[id_cliente] [int] NULL,
+	[data_devolucao] [date] NULL,
+	[valor_aluguel] [decimal](10, 2) NULL,
+	[data_emprestimo] [date] NULL,
+	[livro_devolvido] [char](1) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_alugarlivro] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-ALTER DATABASE [Biblioteca2] SET ANSI_NULLS OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET ANSI_PADDING OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET ANSI_WARNINGS OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET ARITHABORT OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET AUTO_CLOSE ON 
-GO
-ALTER DATABASE [Biblioteca2] SET AUTO_SHRINK OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET AUTO_UPDATE_STATISTICS ON 
-GO
-ALTER DATABASE [Biblioteca2] SET CURSOR_CLOSE_ON_COMMIT OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET CURSOR_DEFAULT  GLOBAL 
-GO
-ALTER DATABASE [Biblioteca2] SET CONCAT_NULL_YIELDS_NULL OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET NUMERIC_ROUNDABORT OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET QUOTED_IDENTIFIER OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET RECURSIVE_TRIGGERS OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET  ENABLE_BROKER 
-GO
-ALTER DATABASE [Biblioteca2] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET DATE_CORRELATION_OPTIMIZATION OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET TRUSTWORTHY OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET PARAMETERIZATION SIMPLE 
-GO
-ALTER DATABASE [Biblioteca2] SET READ_COMMITTED_SNAPSHOT OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET HONOR_BROKER_PRIORITY OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET RECOVERY SIMPLE 
-GO
-ALTER DATABASE [Biblioteca2] SET  MULTI_USER 
-GO
-ALTER DATABASE [Biblioteca2] SET PAGE_VERIFY CHECKSUM  
-GO
-ALTER DATABASE [Biblioteca2] SET DB_CHAINING OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-GO
-ALTER DATABASE [Biblioteca2] SET TARGET_RECOVERY_TIME = 60 SECONDS 
-GO
-ALTER DATABASE [Biblioteca2] SET DELAYED_DURABILITY = DISABLED 
-GO
-ALTER DATABASE [Biblioteca2] SET OPTIMIZED_LOCKING = OFF 
-GO
-ALTER DATABASE [Biblioteca2] SET ACCELERATED_DATABASE_RECOVERY = OFF  
-GO
-ALTER DATABASE [Biblioteca2] SET QUERY_STORE = ON
-GO
-ALTER DATABASE [Biblioteca2] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
-GO
-USE [Biblioteca2]
-GO
-/****** Object:  Table [dbo].[assunto]    Script Date: 29/04/2026 22:59:04 ******/
+/****** Objeto:  Table [dbo].[assunto]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -98,7 +36,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[autor]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[autor]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -113,7 +51,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[cliente]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[cliente]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -134,7 +72,26 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[departamento]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[compra]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[compra](
+	[id_compra] [int] IDENTITY(1,1) NOT NULL,
+	[id_livro] [int] NOT NULL,
+	[id_fornecedor] [int] NOT NULL,
+	[quantia] [int] NOT NULL,
+	[preco_unitario] [decimal](10, 2) NOT NULL,
+	[data_compra] [datetime] NULL,
+	[id_funcionario] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_compra] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[departamento]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -148,7 +105,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[editora]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[editora]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -162,7 +119,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[endereco_cliente]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[endereco_cliente]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -183,7 +140,28 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[forma_pgto]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[endereco_funcionario]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[endereco_funcionario](
+	[id_enderecofunc] [int] IDENTITY(1,1) NOT NULL,
+	[id_funcionario] [int] NULL,
+	[rua] [varchar](100) NOT NULL,
+	[numero] [smallint] NOT NULL,
+	[complemento] [varchar](50) NULL,
+	[bairro] [varchar](50) NOT NULL,
+	[cidade] [varchar](50) NOT NULL,
+	[estado] [char](2) NOT NULL,
+	[cep] [char](8) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_enderecofunc] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[forma_pgto]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -197,7 +175,28 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[funcionario]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[fornecedor]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[fornecedor](
+	[id_fornecedor] [int] IDENTITY(1,1) NOT NULL,
+	[CNPJ] [varchar](18) NOT NULL,
+	[nome_fantasia] [varchar](100) NOT NULL,
+	[razao_social] [varchar](100) NULL,
+	[limite_credito] [decimal](10, 2) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_fornecedor] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+UNIQUE NONCLUSTERED 
+(
+	[CNPJ] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[funcionario]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,13 +209,7 @@ CREATE TABLE [dbo].[funcionario](
 	[cpffunc] [char](11) NOT NULL,
 	[data_nasc] [date] NOT NULL,
 	[salario] [decimal](10, 2) NOT NULL,
-	[rua] [varchar](100) NOT NULL,
-	[numero] [varchar](10) NOT NULL,
-	[complemento] [varchar](50) NULL,
-	[bairro] [varchar](50) NOT NULL,
-	[cidade] [varchar](50) NOT NULL,
-	[estado] [char](2) NOT NULL,
-	[cep] [char](8) NOT NULL,
+	[data_contratacao] [date] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id_funcionario] ASC
@@ -227,7 +220,30 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[item_venda]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[info_fornecedor]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[info_fornecedor](
+	[id_endfornecedor] [int] IDENTITY(1,1) NOT NULL,
+	[id_fornecedor] [int] NOT NULL,
+	[rua] [varchar](100) NOT NULL,
+	[numero] [varchar](10) NULL,
+	[complemento] [varchar](50) NULL,
+	[bairro] [varchar](50) NULL,
+	[cidade] [varchar](50) NULL,
+	[estado] [char](2) NULL,
+	[cep] [char](8) NOT NULL,
+	[telefone] [varchar](15) NOT NULL,
+	[email] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_endfornecedor] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[item_venda]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -244,7 +260,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[livro]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[livro]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -272,7 +288,7 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[livro_autor]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[livro_autor]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -287,7 +303,25 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[pagamento_func]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[movimentacao_estoque]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[movimentacao_estoque](
+	[id_movimentacaoestoque] [int] IDENTITY(1,1) NOT NULL,
+	[id_funcionario] [int] NULL,
+	[id_livro] [int] NULL,
+	[data_movimentacao] [datetime] NULL,
+	[quantidade] [int] NULL,
+	[tipo_movto] [char](1) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_movimentacaoestoque] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[pagamento_func]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -307,7 +341,59 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[venda]    Script Date: 29/04/2026 22:59:05 ******/
+/****** Objeto:  Table [dbo].[pagamento_parcelas]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[pagamento_parcelas](
+	[id_pgtoparcelas] [int] IDENTITY(1,1) NOT NULL,
+	[id_parcela] [int] NOT NULL,
+	[id_formapgto] [int] NOT NULL,
+	[valor_pago] [decimal](10, 2) NULL,
+	[data_pagamento] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_pgtoparcelas] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[parcelas_compra]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[parcelas_compra](
+	[id_parcela] [int] IDENTITY(1,1) NOT NULL,
+	[id_compra] [int] NOT NULL,
+	[numero_parcela] [tinyint] NOT NULL,
+	[valor_parcela] [decimal](10, 2) NOT NULL,
+	[data_vencimento] [date] NOT NULL,
+	[status_pagamento] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_parcela] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[preco_historico]    Data do Script: 06/05/2026 00:22:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[preco_historico](
+	[id_historico] [int] IDENTITY(1,1) NOT NULL,
+	[id_livro] [int] NULL,
+	[preco_antigo] [decimal](10, 2) NULL,
+	[preco_novo] [decimal](10, 2) NULL,
+	[data_alteracao] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_historico] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Objeto:  Table [dbo].[venda]    Data do Script: 06/05/2026 00:22:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -325,6 +411,14 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+ALTER TABLE [dbo].[alugar_livro] ADD  DEFAULT (getdate()) FOR [data_emprestimo]
+GO
+ALTER TABLE [dbo].[alugar_livro] ADD  DEFAULT ('N') FOR [livro_devolvido]
+GO
+ALTER TABLE [dbo].[compra] ADD  DEFAULT (getdate()) FOR [data_compra]
+GO
+ALTER TABLE [dbo].[fornecedor] ADD  DEFAULT ((0.00)) FOR [limite_credito]
+GO
 ALTER TABLE [dbo].[funcionario] ADD  DEFAULT ((0)) FOR [salario]
 GO
 ALTER TABLE [dbo].[item_venda] ADD  DEFAULT ((0)) FOR [preco_pago_unitario]
@@ -335,23 +429,66 @@ ALTER TABLE [dbo].[livro] ADD  DEFAULT ((0)) FOR [estoque]
 GO
 ALTER TABLE [dbo].[livro] ADD  DEFAULT ((0)) FOR [paginas]
 GO
+ALTER TABLE [dbo].[movimentacao_estoque] ADD  DEFAULT (getdate()) FOR [data_movimentacao]
+GO
 ALTER TABLE [dbo].[pagamento_func] ADD  DEFAULT (getdate()) FOR [dia_pgto]
 GO
 ALTER TABLE [dbo].[pagamento_func] ADD  DEFAULT ('Pendente') FOR [status_pgto]
 GO
+ALTER TABLE [dbo].[pagamento_parcelas] ADD  DEFAULT (getdate()) FOR [data_pagamento]
+GO
+ALTER TABLE [dbo].[parcelas_compra] ADD  DEFAULT ('Pendente') FOR [status_pagamento]
+GO
+ALTER TABLE [dbo].[preco_historico] ADD  DEFAULT (getdate()) FOR [data_alteracao]
+GO
 ALTER TABLE [dbo].[venda] ADD  DEFAULT (getdate()) FOR [data_venda]
 GO
 ALTER TABLE [dbo].[venda] ADD  DEFAULT ('Pendente') FOR [status_venda]
+GO
+ALTER TABLE [dbo].[alugar_livro]  WITH CHECK ADD  CONSTRAINT [fk_alugarlivro_cliente] FOREIGN KEY([id_cliente])
+REFERENCES [dbo].[cliente] ([id_cliente])
+GO
+ALTER TABLE [dbo].[alugar_livro] CHECK CONSTRAINT [fk_alugarlivro_cliente]
+GO
+ALTER TABLE [dbo].[alugar_livro]  WITH CHECK ADD  CONSTRAINT [fk_alugarlivro_livro] FOREIGN KEY([id_livro])
+REFERENCES [dbo].[livro] ([id_livro])
+GO
+ALTER TABLE [dbo].[alugar_livro] CHECK CONSTRAINT [fk_alugarlivro_livro]
+GO
+ALTER TABLE [dbo].[compra]  WITH CHECK ADD  CONSTRAINT [fk_compra_fornecedor] FOREIGN KEY([id_fornecedor])
+REFERENCES [dbo].[fornecedor] ([id_fornecedor])
+GO
+ALTER TABLE [dbo].[compra] CHECK CONSTRAINT [fk_compra_fornecedor]
+GO
+ALTER TABLE [dbo].[compra]  WITH CHECK ADD  CONSTRAINT [fk_compra_funcionario] FOREIGN KEY([id_funcionario])
+REFERENCES [dbo].[funcionario] ([id_funcionario])
+GO
+ALTER TABLE [dbo].[compra] CHECK CONSTRAINT [fk_compra_funcionario]
+GO
+ALTER TABLE [dbo].[compra]  WITH CHECK ADD  CONSTRAINT [fk_compra_livro] FOREIGN KEY([id_livro])
+REFERENCES [dbo].[livro] ([id_livro])
+GO
+ALTER TABLE [dbo].[compra] CHECK CONSTRAINT [fk_compra_livro]
 GO
 ALTER TABLE [dbo].[endereco_cliente]  WITH CHECK ADD  CONSTRAINT [fk_enderecocliente_cliente] FOREIGN KEY([id_cliente])
 REFERENCES [dbo].[cliente] ([id_cliente])
 GO
 ALTER TABLE [dbo].[endereco_cliente] CHECK CONSTRAINT [fk_enderecocliente_cliente]
 GO
+ALTER TABLE [dbo].[endereco_funcionario]  WITH CHECK ADD  CONSTRAINT [fk_enderecofuncionario_funcionario] FOREIGN KEY([id_funcionario])
+REFERENCES [dbo].[funcionario] ([id_funcionario])
+GO
+ALTER TABLE [dbo].[endereco_funcionario] CHECK CONSTRAINT [fk_enderecofuncionario_funcionario]
+GO
 ALTER TABLE [dbo].[funcionario]  WITH CHECK ADD  CONSTRAINT [fk_funcionario_departamento] FOREIGN KEY([id_departamento])
 REFERENCES [dbo].[departamento] ([id_departamento])
 GO
 ALTER TABLE [dbo].[funcionario] CHECK CONSTRAINT [fk_funcionario_departamento]
+GO
+ALTER TABLE [dbo].[info_fornecedor]  WITH CHECK ADD  CONSTRAINT [fk_info_fornecedor] FOREIGN KEY([id_fornecedor])
+REFERENCES [dbo].[fornecedor] ([id_fornecedor])
+GO
+ALTER TABLE [dbo].[info_fornecedor] CHECK CONSTRAINT [fk_info_fornecedor]
 GO
 ALTER TABLE [dbo].[item_venda]  WITH CHECK ADD  CONSTRAINT [fk_itemvenda_livro] FOREIGN KEY([id_livro])
 REFERENCES [dbo].[livro] ([id_livro])
@@ -383,6 +520,16 @@ REFERENCES [dbo].[livro] ([id_livro])
 GO
 ALTER TABLE [dbo].[livro_autor] CHECK CONSTRAINT [fk_livroautor_livro]
 GO
+ALTER TABLE [dbo].[movimentacao_estoque]  WITH CHECK ADD  CONSTRAINT [fk_movimentacaoestoque_funcionario] FOREIGN KEY([id_funcionario])
+REFERENCES [dbo].[funcionario] ([id_funcionario])
+GO
+ALTER TABLE [dbo].[movimentacao_estoque] CHECK CONSTRAINT [fk_movimentacaoestoque_funcionario]
+GO
+ALTER TABLE [dbo].[movimentacao_estoque]  WITH CHECK ADD  CONSTRAINT [fk_movimentacaoestoque_livro] FOREIGN KEY([id_livro])
+REFERENCES [dbo].[livro] ([id_livro])
+GO
+ALTER TABLE [dbo].[movimentacao_estoque] CHECK CONSTRAINT [fk_movimentacaoestoque_livro]
+GO
 ALTER TABLE [dbo].[pagamento_func]  WITH CHECK ADD  CONSTRAINT [fk_pagamentofunc_formapgto] FOREIGN KEY([id_formapgto])
 REFERENCES [dbo].[forma_pgto] ([id_formapgto])
 GO
@@ -392,6 +539,21 @@ ALTER TABLE [dbo].[pagamento_func]  WITH CHECK ADD  CONSTRAINT [fk_pagamentofunc
 REFERENCES [dbo].[funcionario] ([id_funcionario])
 GO
 ALTER TABLE [dbo].[pagamento_func] CHECK CONSTRAINT [fk_pagamentofunc_funcionario]
+GO
+ALTER TABLE [dbo].[pagamento_parcelas]  WITH CHECK ADD  CONSTRAINT [fk_pagamento_forma] FOREIGN KEY([id_formapgto])
+REFERENCES [dbo].[forma_pgto] ([id_formapgto])
+GO
+ALTER TABLE [dbo].[pagamento_parcelas] CHECK CONSTRAINT [fk_pagamento_forma]
+GO
+ALTER TABLE [dbo].[pagamento_parcelas]  WITH CHECK ADD  CONSTRAINT [fk_pagamento_parcela] FOREIGN KEY([id_parcela])
+REFERENCES [dbo].[parcelas_compra] ([id_parcela])
+GO
+ALTER TABLE [dbo].[pagamento_parcelas] CHECK CONSTRAINT [fk_pagamento_parcela]
+GO
+ALTER TABLE [dbo].[parcelas_compra]  WITH CHECK ADD  CONSTRAINT [fk_parcelascompra_compra] FOREIGN KEY([id_compra])
+REFERENCES [dbo].[compra] ([id_compra])
+GO
+ALTER TABLE [dbo].[parcelas_compra] CHECK CONSTRAINT [fk_parcelascompra_compra]
 GO
 ALTER TABLE [dbo].[venda]  WITH CHECK ADD  CONSTRAINT [fk_venda_cliente] FOREIGN KEY([id_cliente])
 REFERENCES [dbo].[cliente] ([id_cliente])
@@ -408,13 +570,17 @@ REFERENCES [dbo].[funcionario] ([id_funcionario])
 GO
 ALTER TABLE [dbo].[venda] CHECK CONSTRAINT [fk_venda_funcionario]
 GO
+ALTER TABLE [dbo].[alugar_livro]  WITH CHECK ADD CHECK  (([livro_devolvido]='S' OR [livro_devolvido]='N'))
+GO
 ALTER TABLE [dbo].[cliente]  WITH CHECK ADD CHECK  ((len([cpfcliente])=(11)))
 GO
-ALTER TABLE [dbo].[forma_pgto]  WITH CHECK ADD CHECK  (([forma_pgto]='Cartao de Debito' OR [forma_pgto]='Cartao de Credito' OR [forma_pgto]='Dinheiro' OR [forma_pgto]='Pix'))
+ALTER TABLE [dbo].[fornecedor]  WITH CHECK ADD CHECK  ((len([CNPJ])=(18)))
 GO
 ALTER TABLE [dbo].[funcionario]  WITH CHECK ADD CHECK  ((len([cpffunc])=(11)))
 GO
 ALTER TABLE [dbo].[funcionario]  WITH CHECK ADD CHECK  (([salario]>=(0)))
+GO
+ALTER TABLE [dbo].[info_fornecedor]  WITH CHECK ADD CHECK  (([email] like '_%@_%._%'))
 GO
 ALTER TABLE [dbo].[item_venda]  WITH CHECK ADD CHECK  (([preco_pago_unitario]>=(0)))
 GO
@@ -426,11 +592,11 @@ ALTER TABLE [dbo].[livro]  WITH CHECK ADD CHECK  ((len([ISBN13])=(13)))
 GO
 ALTER TABLE [dbo].[livro]  WITH CHECK ADD CHECK  (([paginas]>=(0)))
 GO
+ALTER TABLE [dbo].[movimentacao_estoque]  WITH CHECK ADD CHECK  (([tipo_movto]='S' OR [tipo_movto]='E'))
+GO
 ALTER TABLE [dbo].[pagamento_func]  WITH CHECK ADD CHECK  (([status_pgto]='Atrasado' OR [status_pgto]='Cancelado' OR [status_pgto]='Pago' OR [status_pgto]='Pendente'))
 GO
+ALTER TABLE [dbo].[parcelas_compra]  WITH CHECK ADD CHECK  (([status_pagamento]='Pendente' OR [status_pagamento]='Atrasado' OR [status_pagamento]='Pago'))
+GO
 ALTER TABLE [dbo].[venda]  WITH CHECK ADD CHECK  (([status_venda]='Pendente' OR [status_venda]='Concluida' OR [status_venda]='Cancelada'))
-GO
-USE [master]
-GO
-ALTER DATABASE [Biblioteca2] SET  READ_WRITE 
 GO
