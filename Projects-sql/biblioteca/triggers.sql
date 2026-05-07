@@ -183,4 +183,46 @@ BEGIN
 END;
 GO
 
+--Trigger de Histórico de Preços
+CREATE OR ALTER TRIGGER t_preco_historico 
+ON livro
+AFTER UPDATE
+AS 
+BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(preco)
+    BEGIN
+        INSERT INTO preco_historico (id_livro, preco_antigo, preco_novo, data_alteracao)
+        SELECT
+            d.id_livro,
+            d.preco,
+            i.preco,
+            GETDATE()
+        FROM inserted i
+        JOIN deleted d ON i.id_livro = d.id_livro
+        WHERE i.preco <> d.preco;
+    END
+END;
+GO
+
+--Trigger de Estoque Negativo
+CREATE OR ALTER TRIGGER t_estoquenegativo
+ON item_venda
+AFTER INSERT
+AS
+BEGIN 
+    SET NOCOUNT ON;
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN livro l ON i.id_livro = l.id_livro
+        WHERE l.estoque < 0 
+    )
+    BEGIN
+        RAISERROR ('Estoque insuficiente para realizar a venda!', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+GO
+
 
