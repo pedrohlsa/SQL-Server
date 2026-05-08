@@ -53,33 +53,50 @@ CREATE OR ALTER VIEW v_rankingvendas_mensal AS
 GO
 
 CREATE OR ALTER VIEW v_faturamentovendas_mensal AS
-    SELECT 
-        iv.id_livro,
-        l.nomelivro,
-        SUM(iv.quantia) as unidades_vendidas,
-        COUNT(DISTINCT v.id_venda) as qtd_transacoes,
-        SUM(iv.quantia * iv.preco_pago_unitario) as faturamento_total
-    FROM item_venda iv
-    INNER JOIN livro l on iv.id_livro = l.id_livro
-    INNER JOIN venda v on iv.id_venda = v.id_venda
-    WHERE v.status_venda = 'Concluida' 
-      AND v.data_venda >= DATEADD(day, -30, GETDATE()) 
-    GROUP BY iv.id_livro, l.nomelivro;
+SELECT 
+    (SELECT ISNULL(SUM(iv.preco_pago_unitario * iv.quantia), 0) 
+     FROM item_venda iv 
+     JOIN venda v ON iv.id_venda = v.id_venda
+     WHERE v.status_venda = 'Concluida' 
+       AND v.data_venda >= DATEADD(day, -30, GETDATE())) AS venda_mensal,
+
+    (SELECT ISNULL(SUM(al.valor_aluguel), 0)
+     FROM alugar_livro al 
+     WHERE al.livro_devolvido = 'S' 
+       AND al.data_emprestimo >= DATEADD(day, -30, GETDATE())) AS aluguel_mensal,
+
+    (SELECT ISNULL(SUM(iv.preco_pago_unitario * iv.quantia), 0) 
+     FROM item_venda iv 
+     JOIN venda v ON iv.id_venda = v.id_venda
+     WHERE v.status_venda = 'Concluida' 
+       AND v.data_venda >= DATEADD(day, -30, GETDATE()))
+    +
+    (SELECT ISNULL(SUM(al.valor_aluguel), 0)
+     FROM alugar_livro al 
+     WHERE al.livro_devolvido = 'S' 
+       AND al.data_emprestimo >= DATEADD(day, -30, GETDATE())) AS total_geral_mensal;
 GO
 
 CREATE OR ALTER VIEW v_faturamentovendas_total AS 
-    SELECT 
-        iv.id_livro,
-        l.nomelivro,
-        SUM(iv.quantia) as total_unidades_vendidas,
-        SUM(iv.quantia * iv.preco_pago_unitario) as faturamento_historico
-    FROM item_venda iv
-    INNER JOIN livro l on iv.id_livro = l.id_livro
-    INNER JOIN venda v on iv.id_venda = v.id_venda
-    WHERE v.status_venda = 'Concluida'
-    GROUP BY iv.id_livro, l.nomelivro;
-GO
+SELECT 
+    (SELECT ISNULL(SUM(iv.preco_pago_unitario * iv.quantia), 0) 
+     FROM item_venda iv 
+     JOIN venda v ON iv.id_venda = v.id_venda 
+     WHERE v.status_venda = 'Concluida') AS venda_totais,
 
+    (SELECT ISNULL(SUM(al.valor_aluguel), 0) 
+     FROM alugar_livro al 
+     WHERE al.livro_devolvido = 'S') AS aluguel_totais,
+
+    (SELECT ISNULL(SUM(iv.preco_pago_unitario * iv.quantia), 0) 
+     FROM item_venda iv 
+     JOIN venda v ON iv.id_venda = v.id_venda 
+     WHERE v.status_venda = 'Concluida') 
+    + 
+    (SELECT ISNULL(SUM(al.valor_aluguel), 0) 
+     FROM alugar_livro al 
+     WHERE al.livro_devolvido = 'S') AS total_geral;
+GO
 CREATE OR ALTER VIEW v_faturamento_unitario AS
     SELECT DISTINCT --evitar duplicatas 
         iv.id_livro,
@@ -95,14 +112,14 @@ GO
  
 CREATE OR ALTER VIEW v_faturamentoliquido AS 
 SELECT 
-    -- total Entradas
+    
     (SELECT ISNULL(SUM(iv.quantia * iv.preco_pago_unitario), 0) FROM item_venda iv
      JOIN venda v ON iv.id_venda = v.id_venda WHERE v.status_venda = 'Concluida')
     +
     (SELECT ISNULL(SUM(valor_aluguel), 0) FROM alugar_livro WHERE livro_devolvido = 'S')
     AS total_entradas,
 
-    -- total Saídas
+    
     (SELECT ISNULL(SUM(quantia * preco_unitario), 0) FROM compra)
     +
     (SELECT ISNULL(SUM(valor_pago), 0) FROM pagamento_func)
@@ -110,7 +127,7 @@ SELECT
     (SELECT ISNULL(SUM(valor_gasto), 0) FROM manutencao_gastos)
     AS total_saidas,
 
-    -- Lucro Real
+    
     (
         (SELECT ISNULL(SUM(iv.quantia * iv.preco_pago_unitario), 0) FROM item_venda iv
          JOIN venda v ON iv.id_venda = v.id_venda WHERE v.status_venda = 'Concluida') +
