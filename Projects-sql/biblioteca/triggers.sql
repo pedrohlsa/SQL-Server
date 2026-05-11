@@ -132,7 +132,7 @@ BEGIN
 END;
 GO
 	
--- Intermediate triggers 
+----------------------------------------------------
 
 CREATE OR ALTER TRIGGER tg_estoque_venda
 ON item_venda
