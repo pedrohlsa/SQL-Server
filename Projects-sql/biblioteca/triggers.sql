@@ -67,7 +67,7 @@ on funcionario
 after update 
 as
 begin 
-	select id_funcionario, id_departamento, concat(nomefunc,' ',sobrenomefunc) as nome, cpffunc as cpf, data_nasc as nascimento, salario, rua, numero, complemento, bairro, cidade, estado, cep
+	select id_funcionario, id_departamento, concat(nomefunc,' ',sobrenomefunc) as nome, cpffunc as cpf, data_nasc as nascimento, salario
 	from inserted;
 end;
 GO
