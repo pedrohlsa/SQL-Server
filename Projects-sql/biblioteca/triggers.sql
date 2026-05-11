@@ -116,7 +116,7 @@ begin
 END;
 GO
 
-CREATE OR ALTER TRIGGER tg_listar_aluguel
+CREATE OR ALTER TRIGGER trg_listar_aluguel
 ON alugar_livro
 AFTER INSERT
 AS 
@@ -134,7 +134,7 @@ GO
 	
 ----------------------------------------------------
 
-CREATE OR ALTER TRIGGER tg_estoque_venda
+CREATE OR ALTER TRIGGER trg_estoque_venda
 ON item_venda
 AFTER INSERT
 AS
@@ -146,7 +146,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER TRIGGER tg_estoque_aluguel
+CREATE OR ALTER TRIGGER trg_estoque_aluguel
 ON alugar_livro 
 AFTER INSERT 
 AS 
@@ -158,7 +158,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER TRIGGER tg_estoque_devolucao
+CREATE OR ALTER TRIGGER trg_estoque_devolucao
 ON alugar_livro
 AFTER UPDATE
 AS
@@ -172,7 +172,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER TRIGGER tg_block_formapgto
+CREATE OR ALTER TRIGGER trg_block_formapgto
 ON forma_pgto
 AFTER INSERT 
 AS 
@@ -183,8 +183,7 @@ BEGIN
 END;
 GO
 
---Trigger de Histórico de Preços
-CREATE OR ALTER TRIGGER t_preco_historico 
+CREATE OR ALTER TRIGGER trg_preco_historico 
 ON livro
 AFTER UPDATE
 AS 
@@ -205,8 +204,7 @@ BEGIN
 END;
 GO
 
---Trigger de Estoque Negativo
-CREATE OR ALTER TRIGGER t_estoquenegativo
+CREATE OR ALTER TRIGGER trg_estoquenegativo
 ON item_venda
 AFTER INSERT
 AS
@@ -225,4 +223,77 @@ BEGIN
 END;
 GO
 
+-- Logs 
+
+CREATE OR ALTER TRIGGER trg_log_livro ON livro AFTER UPDATE, INSERT, DELETE AS BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM inserted) AND NOT EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_atual)
+        SELECT 'livro', id_livro, 'INSERT', nomelivro FROM inserted;
+    
+    IF EXISTS(SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_antigo, valor_atual)
+        SELECT 'livro', i.id_livro, 'UPDATE', d.nomelivro, i.nomelivro
+        FROM inserted i JOIN deleted d ON i.id_livro = d.id_livro;
+    
+    IF NOT EXISTS(SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_antigo)
+        SELECT 'livro', id_livro, 'DELETE', nomelivro FROM deleted;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_alugaron ON alugar_livro AFTER UPDATE, INSERT, DELETE AS BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM inserted) AND NOT EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_atual, valor_novo_secundario)
+        SELECT 'alugar_livro', id_alugarlivro, 'INSERT', CAST(id_livro AS VARCHAR), CAST(id_cliente AS VARCHAR) FROM inserted;
+
+    IF EXISTS(SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_antigo, valor_antigo_secundario, valor_atual, valor_novo_secundario)
+        SELECT 'alugar_livro', i.id_alugarlivro, 'UPDATE', CAST(d.id_livro AS VARCHAR), CAST(d.id_cliente AS VARCHAR), CAST(i.id_livro AS VARCHAR), CAST(i.id_cliente AS VARCHAR)
+        FROM inserted i JOIN deleted d ON i.id_alugarlivro = d.id_alugarlivro;
+
+    IF NOT EXISTS(SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_antigo, valor_antigo_secundario)
+        SELECT 'alugar_livro', id_alugarlivro, 'DELETE', CAST(id_livro AS VARCHAR), CAST(id_cliente AS VARCHAR) FROM deleted;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_log_venda ON venda AFTER UPDATE AS BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(status_venda)
+        INSERT INTO logs(tabela_afestada, id_registro, acao, valor_antigo, valor_atual)
+        SELECT 'venda', i.id_venda, 'UPDATE_STS', d.status_venda, i.status_venda
+        FROM inserted i JOIN deleted d ON i.id_venda = d.id_venda;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_log_pgto_func ON pagamento_func AFTER INSERT, UPDATE AS BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO logs(tabela_afestada, id_registro, acao, valor_atual)
+    SELECT 'pagamento_func', id_pagamento, 'REGISTRO', CAST(valor_pago AS VARCHAR) FROM inserted;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_manutencao_alterarstatus ON manutencao_gastos AFTER INSERT AS BEGIN
+    SET NOCOUNT ON;
+    UPDATE manutencao_chamado
+    SET status_resolvido = 'S', data_resolucao = GETDATE()
+    FROM manutencao_chamado m
+    JOIN inserted i ON i.id_chamado = m.id_chamado;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_manutencao_blockupdategasto ON manutencao_gastos AFTER UPDATE AS BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(valor_gasto)
+    BEGIN
+        IF EXISTS (SELECT 1 FROM inserted i JOIN manutencao_chamado c ON i.id_chamado = c.id_chamado WHERE c.status_resolvido = 'S')
+        BEGIN
+            RAISERROR('Erro! Não é possível alterar o valor gasto de um chamado já resolvido.', 16, 1);
+            ROLLBACK TRANSACTION;
+        END
+    END
+END;
+GO
 
