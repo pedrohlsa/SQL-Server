@@ -4,7 +4,7 @@ CREATE OR ALTER VIEW v_estoquebaixo AS
     WHERE estoque <= 10;
 GO
 
-CREATE OR ALTER VIEW v_alugueis_pendetes AS
+CREATE OR ALTER VIEW v_alugueis_pendentes AS
     SELECT
         c.id_cliente,
         c.nomecliente,
