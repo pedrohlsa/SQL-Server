@@ -137,24 +137,50 @@ GO
 CREATE OR ALTER TRIGGER trg_estoque_venda
 ON item_venda
 AFTER INSERT
-AS
+AS 
 BEGIN
-    UPDATE l
-    SET l.estoque = l.estoque - i.quantia
-    FROM livro l
-    INNER JOIN inserted i ON l.id_livro = i.id_livro;
+	SET NOCOUNT ON;
+
+	UPDATE l
+	set l.estoque = l.estoque - i.quantia
+	FROM livro l
+	JOIN inserted i ON l.id_livro = i.id_livro;
+
+	IF EXISTS (
+		SELECT 1
+		FROM inserted i
+		JOIN livro l ON i.id_livro = l.id_livro
+		WHERE l.estoque < 0
+		)
+		BEGIN 
+			RAISERROR('Estoque insuficiente!', 16, 1);
+			ROLLBACK TRANSACTION;
+	END
 END;
 GO
 
 CREATE OR ALTER TRIGGER trg_estoque_aluguel
-ON alugar_livro 
+ON alugar_livro
 AFTER INSERT 
 AS 
 BEGIN 
-    UPDATE l
-    SET l.estoque = l.estoque - 1
-    FROM inserted i
-    inner join livro l on l.id_livro = i.id_livro;
+	SET NOCOUNT ON;
+
+	UPDATE l
+	SET l.estoque = l.estoque - 1
+	FROM inserted i
+	INNER JOIN livro l ON l.id_livro = i.id_livro;
+	
+	IF EXISTS(
+		SELECT 1
+		FROM inserted i
+		JOIN livro l ON i.id_livro = l.id_livro
+		WHERE l.estoque < 0
+	)
+	BEGIN
+		RAISERROR ('Não livros o suficientes disponíveis deste livro para aluguel!', 16, 1);
+		ROLLBACK TRANSACTION;
+	END
 END;
 GO
 
