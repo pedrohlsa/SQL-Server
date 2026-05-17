@@ -74,3 +74,74 @@ BEGIN
 	PRINT 'Devolução registrada com sucesso';
 END;
 GO
+
+CREATE OR ALTER PROCEDURE pr_aplicar_reajuste_preco
+	@id_assunto INT,
+	@porcentagem_aumento DECIMAL (5,2)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	UPDATE livro
+	SET preco = preco * (1 + (@porcentagem_aumento / 100))
+	WHERE id_assunto = @id_assunto;
+
+	PRINT 'Preço reajustados com sucesso!';
+END;
+GO
+
+CREATE OR ALTER PROCEDURE pr_demitir_funcionario
+    @id_funcionario int,
+	@motivo_demissao VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS( 
+	SELECT 1 
+	FROM funcionario 
+	WHERE id_funcionario = @id_funcionario
+	)
+	BEGIN
+		RAISERROR('Erro: Funcionario não encontrado no sistema!', 16, 1);
+		RETURN;
+	END
+
+		UPDATE funcionario 
+		SET status_funcionario = 'Inativo',
+			salario = 0
+		WHERE id_funcionario = @id_funcionario
+
+		UPDATE info_func 
+		SET data_demissao = GETDATE(),
+			motivo_desligamento = @motivo_demissao
+		WHERE id_funcionario = @id_funcionario
+
+		PRINT 'Funcionario demitido e ficha atualizada com sucesso!';
+END;
+GO
+
+CREATE OR ALTER PROCEDURE pr_cancelar_venda 
+	@id_venda int
+AS 
+BEGIN 
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS(
+	SELECT 1
+	FROM venda
+	WHERE id_venda = @id_venda
+	)
+	BEGIN
+		RAISERROR('Erro: id de venda não encontrada!', 16, 1);
+		RETURN;
+	END
+
+	UPDATE venda
+	SET status_venda = 'Cancelada'
+	WHERE id_venda = @id_venda
+
+	PRINT 'Venda cancelada com sucesso!';
+END;
+GO
+
