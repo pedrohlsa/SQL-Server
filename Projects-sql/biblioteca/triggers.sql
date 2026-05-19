@@ -323,3 +323,23 @@ CREATE OR ALTER TRIGGER trg_manutencao_blockupdategasto ON manutencao_gastos AFT
 END;
 GO
 
+CREATE OR ALTER TRIGGER trg_estoque_cancelamento
+ON venda
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF UPDATE(status_venda)
+    BEGIN
+        UPDATE l
+        SET l.estoque = l.estoque + iv.quantia
+        FROM livro l
+        INNER JOIN item_venda iv ON l.id_livro = iv.id_livro
+        INNER JOIN inserted i ON iv.id_venda = i.id_venda
+        INNER JOIN deleted d ON i.id_venda = d.id_venda
+        WHERE i.status_venda = 'Cancelada'
+          AND d.status_venda = 'Concluida';
+    END
+END;
+GO
