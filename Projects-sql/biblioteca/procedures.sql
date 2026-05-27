@@ -1,3 +1,29 @@
+CREATE PROCEDURE pr_buscar_cliente_por_nome
+	@nome_cliente VARCHAR(100),
+	@sobrenome_cliente VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF EXISTS( 
+		SELECT 1 
+		FROM cliente
+		WHERE nomecliente LIKE '%' + @nome_cliente + '%' 
+		AND sobrenomecliente LIKE '%' + @sobrenome_cliente + '%'
+	)
+	BEGIN
+		SELECT id_cliente, nomecliente, sobrenomecliente
+		FROM cliente
+		WHERE nomecliente LIKE '%' + @nome_cliente + '%' 
+		AND sobrenomecliente LIKE '%' + @sobrenome_cliente + '%'
+	END
+	ELSE
+	BEGIN
+		PRINT 'Cliente não encontrado!'
+	END
+END
+GO
+
 CREATE OR ALTER PROCEDURE pr_registrar_venda
 	@id_cliente int,
 	@id_funcionario int,
