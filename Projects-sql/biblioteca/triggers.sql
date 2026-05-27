@@ -184,6 +184,20 @@ BEGIN
 END;
 GO
 
+CREATE TRIGGER trg_impedir_preco_zero
+ON livro
+AFTER INSERT, UPDATE  
+AS
+BEGIN
+    SET NOCOUNT ON;  
+    IF EXISTS(SELECT 1 FROM inserted WHERE preco <= 0)
+    BEGIN
+        RAISERROR('Operacao cancelada! Preco nao pode ser zero ou negativo!', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END
+GO
+	
 CREATE OR ALTER TRIGGER trg_estoque_devolucao
 ON alugar_livro
 AFTER UPDATE
