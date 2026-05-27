@@ -1,3 +1,16 @@
+CREATE FUNCTION fn_quantidade_alugueis_cliente (@id_cliente INT)
+RETURNS INT
+AS
+BEGIN
+	DECLARE @resultado INT
+	
+	SELECT @resultado = COUNT(*)  
+	FROM alugar_livro
+	WHERE id_cliente = @id_cliente
+	
+	RETURN @resultado  
+END
+
 CREATE FUNCTION fn_calcular_multa(@id_alugarlivro int) -- declarando minha variavel
 RETURNS DECIMAL(10,2) -- retornar decimal
 AS
