@@ -1,3 +1,11 @@
+CREATE VIEW v_livros_caros 
+AS
+SELECT 
+	nomelivro, preco
+	FROM livro
+	WHERE preco >= 49.90;
+GO
+
 CREATE OR ALTER VIEW v_estoquebaixo AS 
     SELECT id_livro, nomelivro, estoque
     FROM livro
