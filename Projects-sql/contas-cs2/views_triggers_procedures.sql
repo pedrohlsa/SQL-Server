@@ -1,3 +1,7 @@
+-- Views line 6 until 36 
+-- Triggers line 37 until 169
+-- Procedures line 171 until 216
+
 -- Contas que ainda faltam pegar a caixa
 CREATE OR ALTER VIEW  v_faltapegar AS
 SELECT nome_usuario, status_drop_semanal
@@ -161,6 +165,7 @@ END;
 
 GO
 
+
 -----------------------------------------------------
 
 CREATE OR ALTER PROCEDURE p_RedefinirDrop 
@@ -178,5 +183,34 @@ BEGIN
     PRINT 'Status de todas as contas resetado para N.';
 
 END;
+GO
+	
+CREATE PROCEDURE p_atualizar_level_xp
+	@nomeconta varchar(50),
+	@level int,
+	@xp int
+AS
+BEGIN
+	UPDATE contas
+	SET level_conta = @level,
+		xp_atual = @xp
+	WHERE nome_usuario = @nomeconta
+END;
 
+CREATE PROCEDURE p_insert_drop
+    @nomeconta VARCHAR(60),
+    @caixa_nome VARCHAR(60),
+    @item_nome VARCHAR(60),
+    @dia DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO drops (id_conta, caixa_nome, item_nome, data_drop)
+    SELECT id_conta, @caixa_nome, @item_nome, @dia
+    FROM contas
+    WHERE nome_usuario = @nomeconta;
+
+
+END;
 GO
