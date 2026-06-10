@@ -1,6 +1,6 @@
 -- Views line 6 until 36 
 -- Triggers line 37 until 169
--- Procedures line 171 until 216
+-- Procedures line 171 until 243
 
 -- Contas que ainda faltam pegar a caixa
 CREATE OR ALTER VIEW  v_faltapegar AS
@@ -168,6 +168,40 @@ GO
 
 -----------------------------------------------------
 
+CREATE PROCEDURE p_adicionar_drop
+    @nomeusuario VARCHAR(30),
+    @nomecaixa VARCHAR(50),
+    @nomeitem VARCHAR(50),
+    @datadrop DATE = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @id_conta INT;
+
+    SELECT @id_conta = id_conta
+    FROM contas
+    WHERE nome_usuario = @nomeusuario;
+    
+    IF @id_conta IS NULL
+    BEGIN
+        PRINT 'Conta não encontrada!';
+        RETURN;
+    END;
+
+    IF @datadrop IS NULL
+        SET @datadrop = GETDATE();
+
+    INSERT INTO drops (id_conta, caixa_nome, item_nome, data_drop)
+    VALUES (@id_conta, @nomecaixa, @nomeitem, @datadrop);
+
+    UPDATE contas
+    SET status_drop_semanal = 'S'
+    WHERE id_conta = @id_conta;
+
+    PRINT 'Drop adicionado com sucesso para a conta ' + @nomeusuario;
+END;
+GO
 CREATE OR ALTER PROCEDURE p_RedefinirDrop 
 
 AS
@@ -185,32 +219,25 @@ BEGIN
 END;
 GO
 	
-CREATE PROCEDURE p_atualizar_level_xp
-	@nomeconta varchar(50),
-	@level int,
-	@xp int
-AS
-BEGIN
-	UPDATE contas
-	SET level_conta = @level,
-		xp_atual = @xp
-	WHERE nome_usuario = @nomeconta
-END;
-
-CREATE PROCEDURE p_insert_drop
-    @nomeconta VARCHAR(60),
-    @caixa_nome VARCHAR(60),
-    @item_nome VARCHAR(60),
-    @dia DATE
+CREATE PROCEDURE p_atualizar_level
+    @nomeusuario VARCHAR(30),
+    @level INT,
+    @xp INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO drops (id_conta, caixa_nome, item_nome, data_drop)
-    SELECT id_conta, @caixa_nome, @item_nome, @dia
-    FROM contas
-    WHERE nome_usuario = @nomeconta;
+    IF NOT EXISTS (SELECT 1 FROM contas WHERE nome_usuario = @nomeusuario)
+    BEGIN	
+        PRINT('Conta não encontrada');
+        RETURN;
+    END
 
+    UPDATE contas
+    SET level_conta = @level,
+        xp_atual = @xp
+    WHERE nome_usuario = @nomeusuario;
 
+    PRINT('Conta atualizada com sucesso!');
 END;
 GO
