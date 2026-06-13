@@ -27,6 +27,17 @@
 
 ---
 
+### 🎮 [eSports - Gerenciamento de Torneios CS2](https://github.com/pedrohlsa/SQL-Server/tree/main/eSports)
+> 🆕 **Projeto mais recente** - Banco de dados para torneios de eSports
+
+- Controle de jogadores, times, torneios e participações
+- Estatísticas de desempenho (kills, deaths, assists, colocação)
+- Consultas com funções agregadas (SUM, AVG, COUNT, ROUND) 
+- Dados reais de jogadores profissionais (FalleN, s1mple, NiKo, ZywOo)
+
+⚠️ **Observação:** Por enquanto irá ter apenas subqueries.
+---
+
 ### 🎮 [contas-cs2](https://github.com/pedrohlsa/SQL-Projects/tree/main/contas-cs2)
 > 🎯 **Projeto de uso pessoal** - Gerenciamento de contas e drops do CS2
 
