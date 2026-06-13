@@ -36,6 +36,7 @@
 - Dados reais de jogadores profissionais (FalleN, s1mple, NiKo, ZywOo)
 
 ⚠️ **Observação:** Por enquanto irá ter apenas subqueries.
+
 ---
 
 ### 🎮 [contas-cs2](https://github.com/pedrohlsa/SQL-Projects/tree/main/contas-cs2)
