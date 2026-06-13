@@ -2,7 +2,7 @@
 
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2019-red)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pedrohlsa)
+![GitHub](https://img.shields.io/badge/GitHub-pedrohlsa-black)
 
 ---
 
