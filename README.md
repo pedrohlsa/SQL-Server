@@ -61,16 +61,6 @@
 | **Linguagens** | Python (aprendendo), C (lógica de programação) |
 | **Ferramentas** | Git, GitHub, VS Code |
 
----
-
-## 📊 GitHub Stats
-
-![Pedro's GitHub stats](https://github-readme-stats.vercel.app/api?username=pedrohlsa&show_icons=true&theme=dracula)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=pedrohlsa&layout=compact&theme=dracula)
-
----
-
 ## 📫 Como me encontrar
 
 - **GitHub:** [github.com/pedrohlsa](https://github.com/pedrohlsa)
