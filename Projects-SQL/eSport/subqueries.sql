@@ -1,4 +1,4 @@
---SUBQUERIES BÁSICAS (WHERE)
+-- NÍVEL 1 - BÁSICO (WHERE com =, >, IN)
 
 -- 1. Jogador mais velho
 SELECT * FROM jogadores
@@ -38,21 +38,7 @@ WHERE p.id_torneio IN (
     SELECT id_torneio FROM torneios WHERE premio_total > 800000
 );
 
--- Jogadores com mais de 25 anos
-SELECT nickname, elo
-FROM jogadores
-WHERE DATEDIFF(YEAR, data_nasc, GETDATE()) >= 25;
-
--- Times fundados em 2015 ou depois
-SELECT * FROM times
-WHERE ano_fundacao >= 2015;
-
--- Torneios de 2024 com prêmio >= 800k
-SELECT * FROM torneios
-WHERE data_inicio >= '2024-01-01' 
-AND premio_total >= 800000.00;
-
--- SUBQUERIES COM HAVING E AGREGAÇÃO
+-- INTERMEDIÁRIO (HAVING + AGREGAÇÃO)
 
 -- 7. Jogadores com kills acima da média de TODOS
 SELECT 
@@ -95,7 +81,20 @@ HAVING SUM(p.premio_ganho) > (
     )
 );
 
--- 10. Jogadores com participações acima da média
+-- 10. Jogadores com kills acima da média do time NAVI (id_time = 2)
+SELECT
+    j.nickname,
+    SUM(p.kills) AS total_kills
+FROM jogadores j
+JOIN participacoes p ON j.id_jogador = p.id_jogador
+GROUP BY j.id_jogador, j.nickname
+HAVING SUM(p.kills) > (
+    SELECT AVG(kills)
+    FROM participacoes
+    WHERE id_time = 2
+);
+
+-- 11. Jogadores com participações acima da média
 SELECT 
     j.nickname,
     COUNT(p.id_participacao) AS total_participacao
@@ -111,9 +110,9 @@ HAVING COUNT(p.id_participacao) > (
     ) AS media_participacao
 );
 
--- SUBQUERIES NO SELECT
+-- AVANÇADO (SUBQUERY NO SELECT E FROM)
 
--- 11. Jogadores com total de torneios e máximo global
+-- 12. Jogadores com total de torneios e máximo global
 SELECT 
     j.nickname,
     COUNT(p.id_torneio) AS torneios_jogados,
@@ -126,9 +125,7 @@ FROM jogadores j
 JOIN participacoes p ON j.id_jogador = p.id_jogador
 GROUP BY j.id_jogador, j.nickname;
 
--- SUBQUERIES NO FROM (TABELA TEMPORÁRIA)
-
--- 12. Times com mais jogadores que a média
+-- 13. Times com mais jogadores que a média
 SELECT 
     t.nome_time,
     COUNT(p.id_jogador) AS quantia_jogadores
@@ -144,16 +141,38 @@ HAVING COUNT(p.id_jogador) > (
     ) AS subquery
 );
 
---  EXTRA
+-- 14. Jogadores que participaram de MAIS torneios que a média de participações
+SELECT 
+    j.nickname,
+    p.quantia_torn
+FROM jogadores j
+INNER JOIN (
+    SELECT 
+        id_jogador,
+        COUNT(id_torneio) AS quantia_torn
+    FROM participacoes 
+    GROUP BY id_jogador 
+    HAVING COUNT(id_torneio) > (
+        SELECT AVG(quantia_torn)
+        FROM (
+            SELECT COUNT(id_torneio) AS quantia_torn
+            FROM participacoes
+            GROUP BY id_jogador
+        ) AS subquery
+    )
+) AS p ON j.id_jogador = p.id_jogador;
 
--- 13. Melhor participação acima da média (TOP 1)
+
+-- TOP E PERFORMANCES
+
+-- 15. Melhor participação acima da média (TOP 1)
 SELECT TOP 1 * FROM participacoes 
 WHERE kills > (
     SELECT AVG(kills) FROM participacoes
 )
 ORDER BY kills DESC;
 
--- 14. Performance completa do FalleN (sem arredondamento)
+-- 16. Performance completa do FalleN (sem arredondamento)
 SELECT 
     j.nickname,
     SUM(p.kills) AS total_kills,
@@ -164,7 +183,7 @@ JOIN jogadores j ON j.id_jogador = p.id_jogador
 WHERE j.id_jogador = 1 
 GROUP BY j.nickname;
 
--- 15. Performance do FalleN (com arredondamento e contagem)
+-- 17. Performance do FalleN (com arredondamento e contagem)
 SELECT 
     j.nickname,
     COUNT(p.id_participacao) AS participacoes,
