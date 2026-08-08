@@ -73,12 +73,6 @@
 | **Linguagens** | Python (aprendendo), C (lógica de programação) |
 | **Ferramentas** | Git, GitHub, VS Code |
 
-## 📫 Como me encontrar
-
-- **GitHub:** [github.com/pedrohlsa](https://github.com/pedrohlsa)
-- **Email:** *stguts25@gmail.com*
-
----
 
 ⭐ **Se gostou dos meus projetos, dá uma estrela!**  
 📚 *Em constante evolução - novos projetos em breve*
